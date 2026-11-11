@@ -63,6 +63,10 @@ import { safeNumberFieldProps } from '../utils/numeric-field'
 import { AmountDiscountVisualEditor } from './amount-discount-visual-editor'
 import { AmountOptionsVisualEditor } from './amount-options-visual-editor'
 import { CreemProductsVisualEditor } from './creem-products-visual-editor'
+import {
+  NowPaymentsSettingsSection,
+  type NowPaymentsSettingsValues,
+} from './nowpayments-settings-section'
 import { PaymentMethodsVisualEditor } from './payment-methods-visual-editor'
 import {
   formatJsonForEditor,
@@ -70,10 +74,6 @@ import {
   normalizeJsonForComparison,
   removeTrailingSlash,
 } from './utils'
-import {
-  NowPaymentsSettingsSection,
-  type NowPaymentsSettingsValues,
-} from './nowpayments-settings-section'
 import { saveWaffoPancakeConfig } from './waffo-pancake-api'
 import {
   WaffoPancakeSettingsSection,
@@ -781,7 +781,9 @@ export function PaymentSettingsSection({
       })
     }
 
-    if (sanitized.NowPaymentsPriceCurrency !== initial.NowPaymentsPriceCurrency) {
+    if (
+      sanitized.NowPaymentsPriceCurrency !== initial.NowPaymentsPriceCurrency
+    ) {
       updates.push({
         key: 'NowPaymentsPriceCurrency',
         value: sanitized.NowPaymentsPriceCurrency,
@@ -802,7 +804,9 @@ export function PaymentSettingsSection({
       })
     }
 
-    if (sanitized.NowPaymentsFeePaidByUser !== initial.NowPaymentsFeePaidByUser) {
+    if (
+      sanitized.NowPaymentsFeePaidByUser !== initial.NowPaymentsFeePaidByUser
+    ) {
       updates.push({
         key: 'NowPaymentsFeePaidByUser',
         value: sanitized.NowPaymentsFeePaidByUser,

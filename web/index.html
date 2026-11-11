@@ -6,11 +6,11 @@
     <meta name="google" content="notranslate" />
 
     <!-- Primary Meta Tags -->
-    <title>New API</title>
-    <meta name="title" content="New API" />
+    <title>Midnight Devs</title>
+    <meta name="title" content="Midnight Devs" />
     <meta
       name="description"
-      content="Unified AI API gateway and admin dashboard."
+      content="200+ Providers, 160+ Models, Up to 30% Off."
     />
 
     <meta name="theme-color" content="#fff" />
@@ -19,14 +19,16 @@
          Keep in sync with ThemeProvider and THEME_STORAGE_KEYS.mode. -->
     <script>
       ;(function () {
-        var theme = 'system'
+        var theme = 'dark'
         try {
-          theme = localStorage.getItem('newapi:theme:v1:mode') || 'system'
+          theme = localStorage.getItem('newapi:theme:v1:mode') || 'dark'
         } catch (e) {}
-        if (theme !== 'dark' && theme !== 'light') {
+        if (theme === 'system') {
           theme = window.matchMedia('(prefers-color-scheme: dark)').matches
             ? 'dark'
             : 'light'
+        } else if (theme !== 'dark' && theme !== 'light') {
+          theme = 'dark'
         }
         document.documentElement.classList.add(theme)
       })()

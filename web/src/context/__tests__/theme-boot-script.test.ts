@@ -76,17 +76,26 @@ describe('index.html theme boot script', () => {
     expect(document.documentElement).not.toHaveClass('dark')
   })
 
-  it('follows the system dark mode when no preference is saved', () => {
-    mockSystemDarkMode(true)
+  it('defaults to dark when no preference is saved, even in light system mode', () => {
+    mockSystemDarkMode(false)
 
     runBootScript()
 
     expect(document.documentElement).toHaveClass('dark')
   })
 
-  it('follows the system light mode when the saved value is invalid', () => {
+  it('defaults to dark when the saved value is invalid', () => {
     mockSystemDarkMode(false)
     localStorage.setItem(THEME_STORAGE_KEYS.mode, 'sepia')
+
+    runBootScript()
+
+    expect(document.documentElement).toHaveClass('dark')
+  })
+
+  it('follows the system theme when system mode is saved', () => {
+    mockSystemDarkMode(false)
+    localStorage.setItem(THEME_STORAGE_KEYS.mode, 'system')
 
     runBootScript()
 

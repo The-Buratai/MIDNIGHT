@@ -239,7 +239,7 @@ function SystemInstancesList(props: SystemInstancesTableProps) {
 
   return (
     <div className='overflow-x-auto rounded-md border'>
-      <Table className='min-w-[1230px]'>
+      <Table className='min-w-[1130px]'>
         <TableHeader>
           <TableRow className='bg-muted/40 hover:bg-muted/40'>
             <TableHead className='h-9 min-w-[240px] px-4 text-xs'>
@@ -255,9 +255,6 @@ function SystemInstancesList(props: SystemInstancesTableProps) {
             </TableHead>
             <TableHead className='h-9 w-[96px] text-xs'>
               {t('Storage')}
-            </TableHead>
-            <TableHead className='h-9 w-[100px] text-xs'>
-              {t('Version')}
             </TableHead>
             <TableHead className='h-9 w-[140px] text-xs'>
               {t('Runtime')}
@@ -419,11 +416,6 @@ function SystemInstancesList(props: SystemInstancesTableProps) {
                       ) : undefined
                     }
                   />
-                </TableCell>
-                <TableCell className='py-2.5 align-middle'>
-                  <div className='truncate font-mono text-xs'>
-                    {instance.info?.runtime?.version || '-'}
-                  </div>
                 </TableCell>
                 <TableCell className='py-2.5 align-middle'>
                   <div className='truncate font-mono text-xs'>

@@ -74,44 +74,41 @@ function getErrorMessage(message: string | undefined, data: unknown): string {
 export function useNowPaymentsPayment() {
   const [processing, setProcessing] = useState(false)
 
-  const processNowPaymentsPayment = useCallback(
-    async (topupAmount: number) => {
-      setProcessing(true)
+  const processNowPaymentsPayment = useCallback(async (topupAmount: number) => {
+    setProcessing(true)
 
-      try {
-        const response = await requestNowPaymentsPayment({
-          amount: Math.floor(topupAmount),
-        })
+    try {
+      const response = await requestNowPaymentsPayment({
+        amount: Math.floor(topupAmount),
+      })
 
-        if (isApiSuccess(response)) {
-          const checkoutUrl = getCheckoutUrl(response.data)
+      if (isApiSuccess(response)) {
+        const checkoutUrl = getCheckoutUrl(response.data)
 
-          if (checkoutUrl) {
-            if (!isSafeHttpCheckoutUrl(checkoutUrl)) {
-              toast.error(i18next.t('Invalid payment redirect URL'))
-              return false
-            }
-            toast.success(i18next.t('Redirecting to payment page...'))
-            window.location.href = checkoutUrl
-            return true
+        if (checkoutUrl) {
+          if (!isSafeHttpCheckoutUrl(checkoutUrl)) {
+            toast.error(i18next.t('Invalid payment redirect URL'))
+            return false
           }
+          toast.success(i18next.t('Redirecting to payment page...'))
+          window.location.href = checkoutUrl
+          return true
         }
-
-        handleServerError(response, undefined, {
-          title:
-            getPaymentErrorTranslation(response) ??
-            getErrorMessage(response.message, response.data),
-        })
-        return false
-      } catch (_error) {
-        handleServerError(_error, i18next.t('Payment request failed'))
-        return false
-      } finally {
-        setProcessing(false)
       }
-    },
-    []
-  )
+
+      handleServerError(response, undefined, {
+        title:
+          getPaymentErrorTranslation(response) ??
+          getErrorMessage(response.message, response.data),
+      })
+      return false
+    } catch (_error) {
+      handleServerError(_error, i18next.t('Payment request failed'))
+      return false
+    } finally {
+      setProcessing(false)
+    }
+  }, [])
 
   return { processing, processNowPaymentsPayment }
 }

@@ -109,7 +109,3 @@ export function selectLatestRelease(payload: unknown): SystemRelease | null {
   if (!validPayload) throw new Error('Unexpected release payload')
   return latest
 }
-
-export function getSystemReleaseUrl(release: SystemRelease): string {
-  return `https://github.com/QuantumNous/new-api/releases/tag/${encodeURIComponent(release.tag_name)}`
-}

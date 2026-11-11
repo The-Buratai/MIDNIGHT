@@ -16,27 +16,17 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import { lazy, Suspense, type ReactElement } from 'react'
+import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Dialog } from '@/components/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
-import { formatTimestampToDate } from '@/lib/format'
 
-import { getSystemReleaseUrl, parseSystemVersion } from './releases'
 import {
   getUpdateErrorMessage,
   type useSystemUpdate,
 } from './use-system-update'
-
-const ReleaseMarkdown = lazy(() =>
-  import('@/components/ui/markdown').then((module) => ({
-    default: module.Markdown,
-  }))
-)
 
 type SystemUpdateDialogProps = {
   open: boolean
@@ -50,11 +40,6 @@ export function SystemUpdateDialog(props: SystemUpdateDialogProps) {
   const update = props.update
   const release = update.release
   const snapshot = update.snapshot
-  const releaseUrl = release ? getSystemReleaseUrl(release) : null
-  const isPrerelease =
-    release &&
-    (release.prerelease ||
-      (parseSystemVersion(release.tag_name)?.stage ?? 3) < 3)
   const canIgnore = release && (update.hasUpdate || update.comparison === null)
   let statusText = t('Updates have not been checked yet.')
   if (update.checking) {
@@ -65,9 +50,7 @@ export function SystemUpdateDialog(props: SystemUpdateDialogProps) {
     } else if (update.comparison === null) {
       statusText = ''
     } else if (update.hasUpdate) {
-      statusText = t('New version available: {{version}}', {
-        version: release.tag_name,
-      })
+      statusText = t('Update available')
     } else {
       statusText = t('No newer version available.')
     }
@@ -105,52 +88,9 @@ export function SystemUpdateDialog(props: SystemUpdateDialogProps) {
           >
             {update.checking ? t('Checking updates...') : t('Check again')}
           </Button>
-          {releaseUrl && (
-            <Button
-              nativeButton={false}
-              role='link'
-              render={
-                <a
-                  href={releaseUrl}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                />
-              }
-            >
-              {t('Go to GitHub')}
-            </Button>
-          )}
         </>
       }
     >
-      <dl className='grid min-w-0 gap-3 text-sm sm:grid-cols-2'>
-        <div className='min-w-0'>
-          <dt className='text-muted-foreground'>{t('Current version')}</dt>
-          <dd className='font-medium break-all'>
-            {update.currentVersion || t('Unknown version')}
-          </dd>
-        </div>
-        <div className='min-w-0'>
-          <dt className='text-muted-foreground'>{t('Latest version')}</dt>
-          <dd className='flex flex-wrap items-center gap-2 font-medium break-all'>
-            {release?.tag_name || t('Unknown')}
-            {isPrerelease && (
-              <Badge variant='warning'>{t('Pre-release')}</Badge>
-            )}
-          </dd>
-        </div>
-        {release?.published_at && (
-          <div>
-            <dt className='text-muted-foreground'>{t('Published at')}</dt>
-            <dd>
-              {formatTimestampToDate(
-                Date.parse(release.published_at),
-                'milliseconds'
-              )}
-            </dd>
-          </div>
-        )}
-      </dl>
       {statusText && (
         <p role='status' aria-live='polite' className='text-sm'>
           {statusText}
@@ -172,19 +112,6 @@ export function SystemUpdateDialog(props: SystemUpdateDialogProps) {
             )}
           </AlertDescription>
         </Alert>
-      )}
-      {props.open && release && (
-        <Suspense fallback={<Skeleton className='h-24 w-full' />}>
-          {release.body ? (
-            <ReleaseMarkdown baseUrl={releaseUrl ?? undefined}>
-              {release.body}
-            </ReleaseMarkdown>
-          ) : (
-            <p className='text-muted-foreground text-sm'>
-              {t('No release notes provided.')}
-            </p>
-          )}
-        </Suspense>
       )}
     </Dialog>
   )

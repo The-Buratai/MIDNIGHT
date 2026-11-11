@@ -1,0 +1,4 @@
+services:
+  new-api:
+    build: .
+    image: new-api-nowpayments:local

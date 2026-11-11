@@ -32,7 +32,6 @@ export type SystemInstanceInfo = {
     [key: string]: unknown
   }
   runtime?: {
-    version?: string
     goos?: string
     goarch?: string
     started_at?: number

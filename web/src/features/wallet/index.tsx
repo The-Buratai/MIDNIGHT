@@ -364,7 +364,8 @@ export function Wallet(props: WalletProps) {
         paymentAmount={paymentAmount}
         paymentMethod={selectedPaymentMethod}
         calculating={calculating}
-        processing={processing ||
+        processing={
+          processing ||
           waffoProcessing ||
           pancakeProcessing ||
           nowPaymentsProcessing

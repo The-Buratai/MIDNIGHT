@@ -23,6 +23,7 @@ import { api } from '@/lib/api'
 import { ROLE } from '@/lib/roles'
 
 import { updateUserSettings } from '../api'
+import { ProfileHeader } from '../components/profile-header'
 import { NotificationTab } from '../components/tabs/notification-tab'
 import type { UserProfile } from '../types'
 
@@ -57,6 +58,19 @@ const settings = {
 }
 
 afterEach(() => vi.restoreAllMocks())
+
+describe('profile header', () => {
+  it('shows profile details without displaying the account ID', () => {
+    render(
+      <ProfileHeader profile={{ ...profile, id: 123456789 }} loading={false} />
+    )
+
+    expect(screen.getByRole('heading', { name: 'Alice' })).toBeInTheDocument()
+    expect(screen.getByText('@alice')).toBeInTheDocument()
+    expect(screen.queryByText(/User ID/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/123456789/)).not.toBeInTheDocument()
+  })
+})
 
 /** The body a PUT sends over the wire: undefined fields are left out. */
 function sentBody(put: { mock: { calls: unknown[][] } }): unknown {
